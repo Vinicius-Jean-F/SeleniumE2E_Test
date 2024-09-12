@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+from pageObject.confirmPage import ConfirmPage
 class CheckoutPage:
 
     cardtitles = (By.XPATH, "//app-card/div[@class='card h-100']/div[@class='card-body']/h4/a")
@@ -21,7 +21,13 @@ class CheckoutPage:
         return self.driver.find_element(*CheckoutPage.checkoutbutton).click()
     
     def clickSuccessButton(self):
-        return self.driver.find_element(*CheckoutPage.successbutton).click()
+        self.driver.find_element(*CheckoutPage.successbutton).click()
+        confirmPage = ConfirmPage(self.driver)
+
+        return confirmPage
+
+
+    
 
 
     

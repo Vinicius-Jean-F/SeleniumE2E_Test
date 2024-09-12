@@ -1,7 +1,8 @@
 import pytest
 from utilities.BaseClass import BaseClass
 from pageObject.homePage import HomePage
-from pageObject.checkoutPage import CheckoutPage
+from pageObject.confirmPage import ConfirmPage
+import time
 
 from selenium import webdriver
 
@@ -14,48 +15,41 @@ from selenium.webdriver.common.by import By
 class TestOne(BaseClass):
     def test_e2e(self):
 
+        #Create homepage object
         homePage = HomePage(self.driver)
-        homePage.shopItems().click()
 
-        #cards = self.driver.find_elements(By.XPATH, "//app-card/div[@class='card h-100']")
-        checkoutPage = CheckoutPage(self.driver)
+        #Go to checkoutPage
+        checkoutPage = homePage.shopItems()
+
+        #Get name of the cards in the page
         cards = checkoutPage.getCardTitles()
 
         for card in cards:
             card_name = card
             
             if card_name == 'Blackberry':
-                #card.find_element(By.XPATH, "div/button").click()
                 checkoutPage.clickCardFooter()
-            
-            
 
-        #self.driver.find_element(By.XPATH, "//a[@class='nav-link btn btn-primary']").click()
+        #Click in the checkout button
         checkoutPage.clickCheckoutButton()
 
-        #self.driver.find_element(By.XPATH, "//button[@class='btn btn-success']").click()
-        checkoutPage.clickSuccessButton()
+        #Click in the green button
+        confirmPage = checkoutPage.clickSuccessButton()
 
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//input[@id='country']"))
-        ).send_keys("Sw")
+        #Send the first letters of the country name
+        confirmPage.inputCountryInitials()
 
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[@class='suggestions']"))
-        )
+        #Get the list of suggestions in the site
+        confirmPage.selectCountry()
 
-        suggestion_list = self.driver.find_elements(By.XPATH, "//div[@class='suggestions']/ul")
+        #Agree with the terms
+        confirmPage.agreeTerms()
 
-
-        for suggestion in suggestion_list:
-            if suggestion.text.strip() == 'Switzerland':
-                suggestion.find_element(By.CSS_SELECTOR, "a").click()
-                
-
-        self.driver.find_element(By.XPATH, "//label[@for='checkbox2']").click()
-        self.driver.find_element(By.XPATH, "//input[@value='Purchase']").click()
-
-        successText = self.driver.find_element(By.CLASS_NAME, "alert-success").text
+        #Click in the purchase button
+        confirmPage.clickPurchase()
+        
+        #Grab succes purchase string
+        successText = confirmPage.testSucces()
 
         assert "Success! Thank you!" in successText
 
