@@ -19,7 +19,7 @@ def setup(request):
         i = 0
     elif browser_name == "IE":
         i = 0
-        
+    
     # Navigate to the desired webpage
     driver.get("https://rahulshettyacademy.com/angularpractice/")
     driver.maximize_window()
