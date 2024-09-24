@@ -15,6 +15,8 @@ from selenium.webdriver.common.by import By
 class TestOne(BaseClass):
     def test_e2e(self):
 
+        log = self.getLogger()
+
         #Create homepage object
         homePage = HomePage(self.driver)
 
@@ -22,6 +24,7 @@ class TestOne(BaseClass):
         checkoutPage = homePage.shopItems()
 
         #Get name of the cards in the page
+        log.info("Getting all the card titles")
         cards = checkoutPage.getCardTitles()
 
         for card in cards:
@@ -51,5 +54,5 @@ class TestOne(BaseClass):
         #Grab succes purchase string
         successText = confirmPage.testSucces()
 
-        assert "Success! Thank you!" in successText
+        assert "Success! Thasdsdnk you!" in successText
 
